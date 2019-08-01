@@ -1,0 +1,37 @@
+#!/usr/bin/env  bash
+
+# Bash Aliases File
+# Don't bother editing the damned default. zypper dup will kill them.
+
+alias google-chrome-beta='/usr/bin/google-chrome-beta --disable-gpu --incognito --password-store=basic';
+alias google-chrome='/usr/bin/google-chrome-beta --disable-gpu --incognito --password-store=basic';
+
+alias iosc='osc -A https://api.suse.de ';
+#alias osc='osc -A https://api.opensuse.org ';
+# See https://en.opensuse.org/openSUSE:OSC
+alias oscb="osc build --ccache"
+alias oscsd="osc service localrun download_files"
+
+# ...is the network up?
+alias netup='ping -c2 8.8.8.8';
+# ...is DNS working?
+alias dnsup='netup && ( echo -en "\n\t"; host 8.8.8.8 )';
+# ...is the SUSE (work) VPN up?
+alias wvup='echo -en "\t"; host jangouts.suse.de; echo ""; systemctl -n 0 --no-pager status openvpn@SUSE-PRV.service';
+# ...are all network resources up?
+#alias amiup='ping -c2 8.8.8.8; ~/bin/suse_corp_vpn_test.sh';
+#alias amiup='ping -c2 8.8.8.8 && ~/bin/suse_corp_vpn_test.sh';
+#alias amiup='ping -c2 8.8.8.8';
+#alias amiup='ping -c2 8.8.8.8 && ( echo ""; host 8.8.8.8 && ( host jangouts.suse.de; echo -e ""; systemctl -n 0 --no-pager status openvpn@SUSE-PRV.service; ) )';
+alias amiup='dnsup && wvup';
+#alias myup='amiup';
+
+alias ll='ls -lahF '
+alias llrt='ll -rt ';
+alias gvim='gvim -p $@'
+alias gview='gview -p $@';
+alias shebang="echo '#!/usr/bin/env bash'";
+
+alias gpa='gpa2 --keyring ';
+alias gpa2='gpa';
+
