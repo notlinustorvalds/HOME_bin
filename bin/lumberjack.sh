@@ -33,6 +33,7 @@ readonly EXIT_MISSING_REQUIREMENT=2;
 # Script variables
 timestamp_args='-z';
 interactive_mode="${TRUE}";
+suffix_mode="${FALSE}";
 exit_msg="";
 
 
@@ -84,20 +85,30 @@ function    sanity_check()  {
 function    lumberjack_help()   {
     cat << EOF
 
+  ...A Lumberjack makes logs!
+
   USAGE:
-    ${THIS_FILE} [-hgnuy] [-f /path/to/logfile] [/path/to/logfile]
+    ${THIS_FILE} [-hgnSUuy] [-f /path/to/logfile] [/path/to/logfile]
 
   Option    Description
   --------- ---------------------------------------------
   -f 'file' Explicit call to '/path/to/logfile'
               If 'logfile' does not exist, you will be 
               prompted if you would like to create it
-              (use "-y" to disable nag prompts).
+              (use "-y" to disable nag mode).
     -h      Display (this) help message.
     -g      Timestamp (whatever format) in UTC (GMT). 
               "-UTC-" will always appended unless UNIX
               epoch is used.
     -n      Append nanoseconds to timestamp.
+    -S      Suffix mode 
+                Put the timestamp at the bottom (end)
+                of the log file.
+                The default is to put the timestamp 
+                at the top (beginning) of the
+                log file.
+    -U      Use the UNIX epoch only for the timestamp
+                (nanoseconds MAY be appended)
     -u      Suffix timestamp with UNIX epoch; e.g.:
                 2019-07-23_13-02-24_-0700_1563912144
     -y      Non-interactive mode; answer 'yes' to prompts.
@@ -112,7 +123,7 @@ EOF
 # EXECUTION
 sanity_check;
 
-while getopts   "f:hgUy" arg;    do
+while getopts   "f:hgSUuy" arg;    do
     case    "$arg" in
         f)  ;;
         h)  lumberjack_help;
@@ -122,9 +133,13 @@ while getopts   "f:hgUy" arg;    do
             ;;
         n)  timestamp_args="${timestamp_args}n"
             ;;
+        S)  suffix_mode="${TRUE}"
+            ;;
+        U)  timestamp_args="${timestamp_args}U"
+            ;;
         u)  timestamp_args="${timestamp_args}u"
             ;;
-        y)  interactive_mode="${TRUE}";
+        y)  interactive_mode="${FALSE}";
             ;;
         *)  lumberjack_help;
             exit_msg="  ERROR: '${OPTARG}' is invalid :-(";
