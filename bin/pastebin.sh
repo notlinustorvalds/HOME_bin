@@ -12,6 +12,10 @@
 
 readonly PASTEBIN_FILE="$HOME/personal/pastebin";
 readonly SYMLINK_TO_PASTEBIN_FILE="$HOME/desktop/pastebin";
+readonly MARKDOWN_H1_70=\
+'=====================================================================';
+readonly MARKDOWN_H2_70=\
+'---------------------------------------------------------------------';
 
 
 ## Make sure shit exists
@@ -32,7 +36,7 @@ if [[ 0 -ne "$?" ]]; then
 fi
 
 echo -e "0a
-# `timestamp`\n\n\n
+Notes for `timestamp -zu`\n"${MARKDOWN_H1_70}"\n\n
 .
 w" | ed "${PASTEBIN_FILE}" ;
 
